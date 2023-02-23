@@ -48,7 +48,6 @@ def create_user(user_name, endpoint):
     create_user_api_endpoint = create_user_api_endpoint.format(id=endpoint)
     data = {"name": user_name}
     response = requests.post(create_user_api_endpoint, json=data)
-    print(type(response))
     return find_player_id(response.text, user_name)
 
 
@@ -71,9 +70,12 @@ def find_player_id(json_string, player_name):
     
 def calculate_score(board_id, user_id, base_line, result):
     sim = dot(base_line, result)/(norm(base_line)*norm(result))
+    print(base_line)
+    print(result)
+    print(sim)
     update_score_api_endpoint = 'https://keepthescore.co/api/{id}/score/'
     update_score_api_endpoint = update_score_api_endpoint.format(id=board_id)
-    data = {"player_id": user_id, "score": sim}
+    data = {"player_id": user_id, "score": sim*100}
 
     response = requests.post(update_score_api_endpoint, json=data)
 
